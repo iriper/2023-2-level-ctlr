@@ -4,6 +4,7 @@ Crawler implementation.
 # pylint: disable=too-many-arguments, too-many-instance-attributes, unused-import, undefined-variable
 import pathlib
 
+from bs4 import BeautifulSoup
 import requests
 
 from typing import Pattern, Union
@@ -217,3 +218,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
