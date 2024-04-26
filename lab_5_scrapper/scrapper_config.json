@@ -1,9 +1,12 @@
 {
-    "seed_urls": [],
-    "headers": {},
-    "total_articles_to_find_and_parse": 0,
-    "encoding": "",
-    "timeout": 0,
+    "seed_urls": ["https://www.ixbt.com/news/2024/04/24/"],
+    "headers": {"accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "cookie": "__cf_bm=2IW_ekedzCklEYf1Bc5eCcIsNBC8Kmp37WE2eE82BW8-1714141990-1.0.1.1-_.9u2iskQcssHOXhLR4Hm5UJt1j4UWdIGeCceaU6RYdkJg9W4k.xZ7YTp6T9.NP8mqOcGX07RvY7U9Lk_V5RNg"},
+    "total_articles_to_find_and_parse": 10,
+    "encoding": "utf-8",
+    "timeout": 3,
     "should_verify_certificate": true,
     "headless_mode": true
 }
