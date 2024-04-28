@@ -281,11 +281,11 @@ class HTMLParser:
         Args:
             article_soup (bs4.BeautifulSoup): BeautifulSoup instance
         """
+        art = []
         text = article_soup.find_all('div', class_='b-article__content')
-        article = []
-        for paragraph in text:
-            article.append(paragraph.text)
-        self.article.text = '\n'.join(article)
+        for text1 in text:
+            art.append(text1.text)
+        self.article.text = '\n'.join(art)
 
     def _fill_article_with_meta_information(self, article_soup: BeautifulSoup) -> None:
         """
@@ -294,34 +294,34 @@ class HTMLParser:
         Args:
             article_soup (bs4.BeautifulSoup): BeautifulSoup instance
         """
-        title = article_soup.find('h1', id_='newspaper')
+        title = article_soup.find('h1', id_='newsheader')
         self.article.title = title.text
 
-        tags = article_soup.find('p', class_='b-article__tags__list')
-        self.article.topics = [tag.text for tag in tags]
+        # tags = article_soup.find('p', class_='b-article__tags__list')
+        # self.article.topics = [tag.text for tag in tags]
 
         self.article.author = article_soup.find('p', class_='author')
 
-        date = article_soup.find('p', class_='date').text
-        ru_to_en_months = {
-            "января": "Jan",
-            "февраля": "Feb",
-            "марта": "Mar",
-            "апреля": "Apr",
-            "мая": "May",
-            "июня": "Jun",
-            "июля": "Jul",
-            "августа": "Aug",
-            "сентября": "Sep",
-            "октября": "Oct",
-            "ноября": "Nov",
-            "декабря": "Dec"}
-        if date:
-            date = date.replace('в', ' ')
-            day, month, year, time = date.split()
-            month_eng = ru_to_en_months.get(month)
-            date = f'{year}-{month_eng}-{day} {time}'
-        self.article.date = self.unify_date_format(date)
+        # date = article_soup.find('p', class_='date').text
+        # ru_to_en_months = {
+        #     "января": "Jan",
+        #     "февраля": "Feb",
+        #     "марта": "Mar",
+        #     "апреля": "Apr",
+        #     "мая": "May",
+        #     "июня": "Jun",
+        #     "июля": "Jul",
+        #     "августа": "Aug",
+        #     "сентября": "Sep",
+        #     "октября": "Oct",
+        #     "ноября": "Nov",
+        #     "декабря": "Dec"}
+        # if date:
+        #     date = date.replace('в', ' ')
+        #     day, month, year, time = date.split()
+        #     month_eng = ru_to_en_months.get(month)
+        #     date = f'{year}-{month_eng}-{day} {time}'
+        # self.article.date = self.unify_date_format(date)
 
     def unify_date_format(self, date_str: str) -> datetime.datetime:
         """
@@ -333,6 +333,7 @@ class HTMLParser:
         Returns:
             datetime.datetime: Datetime object
         """
+        # return datetime.datetime.strptime(date_str, '%d.%m.%Y %H:%M')
 
     def parse(self) -> Union[Article, bool, list]:
         """
