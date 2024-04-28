@@ -79,18 +79,18 @@ class Config:
         """
         Ensure configuration parameters are not corrupt.
         """
+        if not isinstance(self.config.seed_urls, list):
+            raise IncorrectSeedURLError
+
         for seed_url in self.config.seed_urls:
             if not (isinstance(seed_url, str) and re.match(r"https?://(www.)?ixbt\.com/news/+", seed_url)):
                 raise IncorrectSeedURLError
 
-        if not 0 < self.config.total_articles < 150:
-            raise NumberOfArticlesOutOfRangeError
-
-        if not isinstance(self.config.seed_urls, list):
-            raise IncorrectSeedURLError
-
         if not isinstance(self.config.total_articles, int) or self.config.total_articles <= 0:
             raise IncorrectNumberOfArticlesError
+
+        if not 0 < self.config.total_articles <= 150:
+            raise NumberOfArticlesOutOfRangeError
 
         if not isinstance(self.config.headers, dict):
             raise IncorrectHeadersError
