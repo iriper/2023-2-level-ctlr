@@ -80,7 +80,7 @@ class Config:
         Ensure configuration parameters are not corrupt.
         """
         for seed_url in self.config.seed_urls:
-            if not re.match(r"https?://(www.)?ixbt\.com/news/+", seed_url):
+            if not (isinstance(seed_url, str) and re.match(r"https?://(www.)?ixbt\.com/news/+", seed_url)):
                 raise IncorrectSeedURLError
 
         if not 0 < self.config.total_articles < 150:
