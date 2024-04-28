@@ -83,7 +83,7 @@ class Config:
             raise IncorrectSeedURLError
 
         for seed_url in self.config.seed_urls:
-            if not (isinstance(seed_url, str) and re.match(r"https?://(www.)?ixbt\.com/news/+", seed_url)):
+            if not isinstance(seed_url, str) or not re.match(r"https?://(www.)?ixbt\.com/news/+", seed_url):
                 raise IncorrectSeedURLError
 
         if not isinstance(self.config.total_articles, int) or self.config.total_articles <= 0:
