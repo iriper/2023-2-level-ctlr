@@ -221,8 +221,8 @@ class Crawler:
             url = self.url_pattern + link.get('href')
             if url not in self.urls:
                 break
-        else:
-            url = ''
+            else:
+                url = ''
         return url
 
     def find_articles(self) -> None:
