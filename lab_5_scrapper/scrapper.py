@@ -83,7 +83,7 @@ class Config:
             raise IncorrectSeedURLError
 
         for seed_url in self.config.seed_urls:
-            if not isinstance(seed_url, str) or not re.match(r"https?://(www.)?ixbt\.com/news+", seed_url):
+            if not isinstance(seed_url, str) or not re.match(r"https?://(www.)?", seed_url):
                 raise IncorrectSeedURLError
 
         if not isinstance(self.config.total_articles, int) or self.config.total_articles <= 0:
@@ -220,7 +220,7 @@ class Crawler:
         for link in links:
             url = self.url_pattern + link.get('href')
             if url not in self.urls:
-                break
+                return url
         return url
 
     def find_articles(self) -> None:
@@ -232,7 +232,7 @@ class Crawler:
                 response = make_request(url, self.config)
                 if not response.ok:
                     continue
-                soup = BeautifulSoup(url, 'lxml')
+                soup = BeautifulSoup(response.text, 'lxml')
                 found_url = self._extract_url(soup)
                 self.urls.append(found_url)
                 if len(self.urls) >= self.config.get_num_articles():
@@ -282,7 +282,7 @@ class HTMLParser:
         text = article_soup.find_all('div', class_='b-article__content')
         for text1 in text:
             art.append(text1.text)
-        self.article.text = '\n'.join(art)
+        self.article.text = '/n'.join(art).strip()
 
     def _fill_article_with_meta_information(self, article_soup: BeautifulSoup) -> None:
         """
@@ -291,34 +291,36 @@ class HTMLParser:
         Args:
             article_soup (bs4.BeautifulSoup): BeautifulSoup instance
         """
-        title = article_soup.find('h1', id_='newsheader')
+        title = article_soup.find('h1', itemprop='name')
         self.article.title = title.text
 
-        # tags = article_soup.find('p', class_='b-article__tags__list')
-        # self.article.topics = [tag.text for tag in tags]
+        tags = article_soup.find_all('a', class_='news-tag')
+        self.article.topics = [tag.text for tag in tags]
 
-        self.article.author = article_soup.find('p', class_='author')
+        self.article.author = [article_soup.find('p', class_='author').text.strip().replace('Автор: ', '')]
+        if not self.article.author:
+            self.article.author = ['NOT FOUND']
 
-        # date = article_soup.find('p', class_='date').text
-        # ru_to_en_months = {
-        #     "января": "Jan",
-        #     "февраля": "Feb",
-        #     "марта": "Mar",
-        #     "апреля": "Apr",
-        #     "мая": "May",
-        #     "июня": "Jun",
-        #     "июля": "Jul",
-        #     "августа": "Aug",
-        #     "сентября": "Sep",
-        #     "октября": "Oct",
-        #     "ноября": "Nov",
-        #     "декабря": "Dec"}
-        # if date:
-        #     date = date.replace('в', ' ')
-        #     day, month, year, time = date.split()
-        #     month_eng = ru_to_en_months.get(month)
-        #     date = f'{year}-{month_eng}-{day} {time}'
-        # self.article.date = self.unify_date_format(date)
+        date = article_soup.find('p', class_='date').text
+        ru_to_en_months = {
+            "января": "01",
+            "февраля": "02",
+            "марта": "03",
+            "апреля": "04",
+            "мая": "05",
+            "июня": "06",
+            "июля": "07",
+            "августа": "08",
+            "сентября": "09",
+            "октября": "10",
+            "ноября": "11",
+            "декабря": "12"}
+        if date:
+            date = date.replace('в', ' ')
+            day, month, year, time = date.split()
+            month_eng = ru_to_en_months.get(month)
+            date = f'{year}-{month_eng}-{day} {time}'
+        self.article.date = self.unify_date_format(date)
 
     def unify_date_format(self, date_str: str) -> datetime.datetime:
         """
@@ -330,7 +332,7 @@ class HTMLParser:
         Returns:
             datetime.datetime: Datetime object
         """
-        # return datetime.datetime.strptime(date_str, '%d.%m.%Y %H:%M')
+        return datetime.datetime.strptime(date_str, '%Y-%m-%d %H:%M')
 
     def parse(self) -> Union[Article, bool, list]:
         """
@@ -356,7 +358,7 @@ def prepare_environment(base_path: Union[pathlib.Path, str]) -> None:
     """
     if base_path.exists():
         shutil.rmtree(base_path)
-    base_path.mkdir()
+    base_path.mkdir(parents=True)
 
 
 def main() -> None:
