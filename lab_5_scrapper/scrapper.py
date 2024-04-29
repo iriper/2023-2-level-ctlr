@@ -5,9 +5,9 @@ Crawler implementation.
 import datetime
 import json
 import pathlib
-from random import randrange
 import re
 import shutil
+from random import randrange
 from time import sleep
 from typing import Pattern, Union
 
@@ -18,6 +18,7 @@ from core_utils.article.article import Article
 from core_utils.article.io import to_meta, to_raw
 from core_utils.config_dto import ConfigDTO
 from core_utils.constants import ASSETS_PATH, CRAWLER_CONFIG_PATH
+
 
 class IncorrectSeedURLError(Exception):
     pass
