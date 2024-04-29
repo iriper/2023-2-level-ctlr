@@ -83,7 +83,7 @@ class Config:
             raise IncorrectSeedURLError
 
         for seed_url in self.config.seed_urls:
-            if not isinstance(seed_url, str) or not re.match(r"https?://(www.)?ixbt\.com/news/+", seed_url):
+            if not isinstance(seed_url, str) or not re.match(r"https?://(www.)?ixbt\.com/news+", seed_url):
                 raise IncorrectSeedURLError
 
         if not isinstance(self.config.total_articles, int) or self.config.total_articles <= 0:
@@ -221,8 +221,6 @@ class Crawler:
             url = self.url_pattern + link.get('href')
             if url not in self.urls:
                 break
-            else:
-                url = ''
         return url
 
     def find_articles(self) -> None:
@@ -230,7 +228,7 @@ class Crawler:
         Find articles.
         """
         while len(self.urls) < self.config.get_num_articles():
-            for url in self.config.get_seed_urls():
+            for url in self.get_search_urls():
                 response = make_request(url, self.config)
                 if not response.ok:
                     continue
