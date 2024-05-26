@@ -185,7 +185,7 @@ class UDPipeAnalyzer(LibraryWrapper):
             article (Article): Article containing information to save
         """
         with open(article.get_file_path(ArtifactType.UDPIPE_CONLLU),
-                  'w', encoding='utf-8') as annotation_file :
+                  'w', encoding='utf-8') as annotation_file:
             annotation_file.write(article.get_conllu_info())
             annotation_file.write("\n")
 
