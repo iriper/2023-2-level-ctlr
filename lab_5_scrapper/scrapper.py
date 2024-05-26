@@ -22,24 +22,52 @@ from core_utils.constants import ASSETS_PATH, CRAWLER_CONFIG_PATH
 
 class IncorrectSeedURLError(Exception):
     pass
+    """
+    The seed-url is not appropriate.
+    """
+
 
 class NumberOfArticlesOutOfRangeError(Exception):
     pass
+    """
+    Total number of articles is out of range from 1 to 150.
+    """
+
 
 class IncorrectNumberOfArticlesError(Exception):
     pass
+    """
+    Total number of articles to parse is not integer.
+    """
+
 
 class IncorrectHeadersError(Exception):
     pass
+    """
+    Headers are not in a form of dictionary.
+    """
+
 
 class IncorrectEncodingError(Exception):
     pass
+    """
+    Encoding must be specified as a string.
+    """
+
 
 class IncorrectTimeoutError(Exception):
     pass
+    """
+    Timeout value must be a positive integer less than 60.
+    """
+
 
 class IncorrectVerifyError(Exception):
     pass
+    """
+    Verify certificate value must either be True or False.
+    """
+
 
 class Config:
     """
