@@ -318,7 +318,8 @@ class HTMLParser:
         tags = article_soup.find_all('a', class_='news-tag')
         self.article.topics = [tag.text for tag in tags]
 
-        self.article.author = [article_soup.find('p', class_='author').text.strip().replace('Автор: ', '')]
+        self.article.author = [article_soup.find('p',
+                                                 class_='author').text.strip().replace('Автор: ', '')]
         if not self.article.author:
             self.article.author = ['NOT FOUND']
 
@@ -401,4 +402,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
