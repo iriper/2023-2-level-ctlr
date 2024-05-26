@@ -319,7 +319,8 @@ class HTMLParser:
         self.article.topics = [tag.text for tag in tags]
 
         self.article.author = [article_soup.find('p',
-                                                 class_='author').text.strip().replace('Автор: ', '')]
+                                                 class_='author').text.strip().replace('Автор: ',
+                                                                                       '')]
         if not self.article.author:
             self.article.author = ['NOT FOUND']
 
